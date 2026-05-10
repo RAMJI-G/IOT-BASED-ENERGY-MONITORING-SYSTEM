@@ -1,0 +1,303 @@
+/************************************************************
+            IoT SMART EMS SYSTEM
+ ESP8266 + ACS712 + ZMPT101B + OLED + BLYNK
+
+ USE:
+ Insert 240V bulb into holder to measure:
+ ✅ Voltage
+ ✅ Current
+ ✅ Power
+
+ FEATURES:
+ ✅ OLED Startup Animation
+ ✅ Real-Time V, I, P Display
+ ✅ Blynk IoT Monitoring
+ ✅ SuperChart Support
+
+ -------------------------------------------------
+
+ OLED:
+ SDA -> D2
+ SCL -> D1
+
+ ACS712 OUT -> A0 using SPDT
+ ZMPT101B OUT -> A0 using SPDT
+
+************************************************************/
+
+// ================= BLYNK =================
+
+#define BLYNK_TEMPLATE_ID "................."
+#define BLYNK_TEMPLATE_NAME "................"
+#define BLYNK_AUTH_TOKEN "...................."
+
+#define BLYNK_PRINT Serial
+
+#include <ESP8266WiFi.h>
+#include <BlynkSimpleEsp8266.h>
+
+// ================= OLED =================
+
+#include <Wire.h>
+#include <Adafruit_GFX.h>
+#include <Adafruit_SSD1306.h>
+
+// ================= WIFI =================
+
+char ssid[] = "........";
+char pass[] = "";
+
+// ================= OLED =================
+
+#define SCREEN_WIDTH 128
+#define SCREEN_HEIGHT 64
+
+Adafruit_SSD1306 display(SCREEN_WIDTH, SCREEN_HEIGHT, &Wire, -1);
+
+// ================= SENSOR =================
+
+#define SENSOR_PIN A0
+
+// ================= VARIABLES =================
+
+float voltage = 0;
+float current = 0;
+float power = 0;
+
+// ================= TIMER =================
+
+BlynkTimer timer;
+
+// ======================================================
+// STARTUP ANIMATION
+// ======================================================
+
+void startupAnimation()
+{
+  // FRAME 1
+  display.clearDisplay();
+
+  display.setTextSize(3);
+  display.setTextColor(WHITE);
+
+  display.setCursor(8, 5);
+  display.println("SMART");
+
+  display.setTextSize(2);
+
+  display.setCursor(38, 38);
+  display.println("EMS");
+
+  display.display();
+
+  delay(1500);
+
+  // FRAME 2
+  display.clearDisplay();
+
+  display.setTextSize(1);
+
+  display.setCursor(18, 10);
+  display.println("ENERGY MONITORING");
+
+  display.setCursor(42, 25);
+  display.println("SYSTEM");
+
+  display.drawRoundRect(10, 45, 108, 10, 3, WHITE);
+
+  for(int i = 0; i <= 100; i += 4)
+  {
+    display.fillRoundRect(12, 47, i, 6, 2, WHITE);
+
+    display.display();
+
+    delay(70);
+  }
+
+  delay(700);
+
+  // FRAME 3
+  display.clearDisplay();
+
+  display.setTextSize(2);
+
+  display.setCursor(18, 15);
+  display.println("WELCOME");
+
+  display.setTextSize(1);
+
+  display.setCursor(12, 45);
+  display.println("SMART ENERGY SYSTEM");
+
+  display.display();
+
+  delay(1500);
+}
+
+// ======================================================
+// SEND DATA TO BLYNK
+// ======================================================
+
+void sendToBlynk()
+{
+  Blynk.virtualWrite(V0, voltage);
+
+  Blynk.virtualWrite(V1, current);
+
+  Blynk.virtualWrite(V2, power);
+}
+
+// ======================================================
+// SETUP
+// ======================================================
+
+void setup()
+{
+  Serial.begin(115200);
+
+  // OLED I2C
+  Wire.begin(D2, D1);
+
+  // OLED START
+  if(!display.begin(SSD1306_SWITCHCAPVCC, 0x3C))
+  {
+    Serial.println("OLED FAIL");
+
+    while(1);
+  }
+
+  // STARTUP ANIMATION
+  startupAnimation();
+
+  // BLYNK CONNECT
+  Blynk.begin(BLYNK_AUTH_TOKEN, ssid, pass);
+
+  // SEND DATA EVERY 1 SECOND
+  timer.setInterval(1000L, sendToBlynk);
+}
+
+// ======================================================
+// LOOP
+// ======================================================
+
+void loop()
+{
+  Blynk.run();
+
+  timer.run();
+
+  // =====================================
+  // READ SENSOR VALUE
+  // =====================================
+
+  int sensorValue = analogRead(SENSOR_PIN);
+
+  float sensorVoltage = sensorValue * (3.3 / 1023.0);
+
+  // =====================================
+  // CURRENT CALCULATION
+  // ACS712
+  // =====================================
+
+  current = (sensorVoltage - 2.5) / 0.185;
+
+  if(current < 0)
+  {
+    current = -current;
+  }
+
+  // =====================================
+  // VOLTAGE CALCULATION
+  // ZMPT101B
+  // =====================================
+
+  voltage = sensorVoltage * 220;
+
+  // =====================================
+  // IF BULB REMOVED
+  // =====================================
+
+  if(current < 0.03)
+  {
+    current = 0;
+    power = 0;
+  }
+
+  // =====================================
+  // POWER CALCULATION
+  // =====================================
+
+  power = voltage * current;
+
+  // =====================================
+  // OLED DISPLAY
+  // =====================================
+
+  display.clearDisplay();
+
+  display.setTextSize(1);
+
+  display.setTextColor(WHITE);
+
+  // TITLE
+  display.setCursor(25, 0);
+  display.println("SMART EMS");
+
+  // LINE
+  display.drawLine(0, 12, 128, 12, WHITE);
+
+  // VOLTAGE
+  display.setCursor(0, 22);
+
+  display.print("VOLTAGE: ");
+
+  display.print(voltage, 1);
+
+  display.println("V");
+
+  // CURRENT
+  display.setCursor(0, 38);
+
+  display.print("CURRENT: ");
+
+  display.print(current, 2);
+
+  display.println("A");
+
+  // POWER
+  display.setCursor(0, 54);
+
+  display.print("POWER  : ");
+
+  display.print(power, 1);
+
+  display.println("W");
+
+  display.display();
+
+  // =====================================
+  // SERIAL MONITOR
+  // =====================================
+
+  Serial.print("Voltage : ");
+
+  Serial.print(voltage);
+
+  Serial.println("V");
+
+  Serial.print("Current : ");
+
+  Serial.print(current);
+
+  Serial.println("A");
+
+  Serial.print("Power : ");
+
+  Serial.print(power);
+
+  Serial.println("W");
+
+  Serial.println("----------------------");
+
+  delay(500);
+}

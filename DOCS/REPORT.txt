@@ -1,0 +1,367 @@
+# AI Enabled IoT Smart Energy Monitoring and Home Automation System
+
+## 1. Professional Project Title
+
+# AI Enabled IoT Smart Energy Monitoring and Home Automation System using ESP32, Blynk, and Google Assistant
+
+Alternative Titles:
+
+* Smart Home Automation and Energy Monitoring System using ESP32
+* IoT Based Smart EMS with Voice Control
+* Embedded IoT Energy Monitoring and Automation System
+* Wireless Smart Home Control and Energy Analytics System
+
+---
+
+# 2. Aim of the Project
+
+The aim of this project is to design and develop an ESP32-based IoT Smart Energy Monitoring and Home Automation System capable of monitoring electrical parameters such as voltage, current, and power while enabling wireless appliance control using Blynk IoT and Google Assistant through Sinric Pro.
+
+---
+
+# 3. Abstract
+
+This project presents an AI-enabled IoT Smart Energy Monitoring and Home Automation System using ESP32. The system integrates energy monitoring, relay-based automation, wireless communication, and cloud IoT technology into a single embedded platform.
+
+The proposed system measures electrical parameters including voltage, current, and power using ACS712 and ZMPT101B sensors. The measured data is displayed on an OLED display and transmitted to the Blynk IoT cloud platform for remote monitoring and analytics.
+
+The system also supports smart appliance automation using relay modules to control devices such as bulbs and fans. Google Assistant voice control is implemented through Sinric Pro, enabling users to operate appliances using voice commands.
+
+This project combines embedded systems, IoT, automation, wireless communication, cloud monitoring, and smart home technologies into a professional engineering solution suitable for smart homes, industries, and energy-saving applications.
+
+---
+
+# 4. Problem Statement
+
+Traditional electrical systems do not provide real-time energy monitoring, remote accessibility, or intelligent automation. Users are unable to monitor energy consumption remotely or control appliances efficiently.
+
+Manual switching leads to unnecessary energy wastage and reduced operational efficiency.
+
+Therefore, there is a need for a smart, wireless, and IoT-based system capable of:
+
+* Real-time energy monitoring
+* Wireless appliance control
+* Voice assistant integration
+* Cloud-based monitoring
+* Smart automation
+* Energy-saving management
+
+---
+
+# 5. Objectives
+
+* To develop a real-time energy monitoring system
+* To measure voltage, current, and power consumption
+* To implement wireless IoT monitoring using Blynk
+* To control appliances remotely using ESP32
+* To integrate Google Assistant voice control
+* To automate home appliances using relays
+* To display real-time data on OLED display
+* To create a professional embedded IoT system
+
+---
+
+# 6. Core Concept
+
+The ESP32 acts as the central controller of the system.
+
+The ACS712 current sensor and ZMPT101B voltage sensor measure electrical parameters from connected loads.
+
+The ESP32 processes sensor data and calculates:
+
+* Voltage
+* Current
+* Power
+
+The calculated values are:
+
+* Displayed on OLED
+* Sent to Blynk Cloud
+* Visualized using SuperChart
+
+Relay modules are used to control appliances such as bulbs and fans.
+
+Sinric Pro connects the ESP32 with Google Assistant for voice-based automation.
+
+---
+
+# 7. Components Required
+
+| Component               | Quantity | Purpose                  |
+| ----------------------- | -------- | ------------------------ |
+| ESP32 Dev Board         | 1        | Main controller          |
+| ACS712 Current Sensor   | 1        | Current measurement      |
+| ZMPT101B Voltage Sensor | 1        | Voltage measurement      |
+| OLED SSD1306 Display    | 1        | Real-time display        |
+| 2-Channel Relay Module  | 1        | Appliance switching      |
+| Bulb Holder             | 1        | Bulb connection          |
+| 240V Bulb               | 1        | AC load                  |
+| Fan                     | 1        | Appliance control        |
+| Jumper Wires            | Multiple | Connections              |
+| Breadboard              | 1        | Prototyping              |
+| WiFi Router             | 1        | Internet connection      |
+| Smartphone              | 1        | Blynk & Google Assistant |
+| Buzzer (Optional)       | 1        | Alerts                   |
+| Power Supply            | 1        | System power             |
+
+---
+
+# 8. Complete Wiring and Configuration
+
+## OLED Connections
+
+| OLED Pin | ESP32 Pin |
+| -------- | --------- |
+| VCC      | 3.3V      |
+| GND      | GND       |
+| SDA      | GPIO21    |
+| SCL      | GPIO22    |
+
+## ACS712 Connections
+
+| ACS712 Pin | ESP32 Pin |
+| ---------- | --------- |
+| VCC        | 5V        |
+| GND        | GND       |
+| OUT        | GPIO34    |
+
+## ZMPT101B Connections
+
+| ZMPT101B Pin | ESP32 Pin |
+| ------------ | --------- |
+| VCC          | 5V        |
+| GND          | GND       |
+| OUT          | GPIO35    |
+
+## Relay Connections
+
+| Relay Pin | ESP32 Pin |
+| --------- | --------- |
+| IN1       | GPIO26    |
+| IN2       | GPIO27    |
+| VCC       | 5V        |
+| GND       | GND       |
+
+## Appliance Connections
+
+* Relay Channel 1 → Bulb
+* Relay Channel 2 → Fan
+
+---
+
+# 9. Pin Connections
+
+| Device   | ESP32 GPIO |
+| -------- | ---------- |
+| ACS712   | GPIO34     |
+| ZMPT101B | GPIO35     |
+| Relay 1  | GPIO26     |
+| Relay 2  | GPIO27     |
+| OLED SDA | GPIO21     |
+| OLED SCL | GPIO22     |
+
+---
+
+# 10. Circuit Diagram Explanation
+
+The ESP32 acts as the central controller connected to sensors, relays, OLED, and IoT platforms.
+
+The ACS712 measures current flow through the load.
+
+The ZMPT101B measures AC voltage.
+
+The relay module controls AC appliances.
+
+The OLED display shows real-time values.
+
+The ESP32 connects to WiFi and uploads sensor data to Blynk cloud.
+
+Google Assistant commands are received via Sinric Pro and processed by ESP32.
+
+---
+
+# 11. Working Principle
+
+1. ESP32 powers ON.
+2. ESP32 connects to WiFi.
+3. Sensors continuously monitor electrical parameters.
+4. ESP32 calculates power.
+5. OLED displays real-time values.
+6. Data is uploaded to Blynk.
+7. User controls appliances using:
+
+   * Blynk App
+   * Google Assistant
+8. Relay switches ON/OFF appliances.
+
+---
+
+# 12. Step-by-Step Procedure
+
+## Hardware Setup
+
+1. Connect ESP32.
+2. Connect OLED display.
+3. Connect ACS712.
+4. Connect ZMPT101B.
+5. Connect relay module.
+6. Connect bulb and fan.
+7. Verify AC wiring carefully.
+
+## Software Setup
+
+1. Install Arduino IDE.
+2. Install ESP32 board package.
+3. Install required libraries.
+4. Create Blynk account.
+5. Create Sinric Pro account.
+6. Configure Google Home.
+7. Upload code.
+8. Test IoT control.
+
+---
+---
+
+# 14. Blynk Setup Guide
+
+## Steps
+
+1. Install Blynk IoT app
+2. Create template
+3. Create datastreams:
+
+| Datastream | Virtual Pin |
+| ---------- | ----------- |
+| Voltage    | V0          |
+| Current    | V1          |
+| Power      | V2          |
+| Bulb Relay | V3          |
+| Fan Relay  | V4          |
+
+4. Add widgets:
+
+* Gauge
+* Switch
+* SuperChart
+* Label
+
+5. Copy:
+
+* Template ID
+* Device Name
+* Auth Token
+
+6. Paste into Arduino code.
+
+---
+
+# 15. Sinric Pro Setup Guide
+
+## Steps
+
+1. Create Sinric Pro account
+2. Add Smart Switch device
+3. Copy:
+
+* APP KEY
+* APP SECRET
+* Device ID
+
+4. Integrate into ESP32 code.
+
+---
+
+# 16. Google Home Integration
+
+## Steps
+
+1. Open Google Home app
+2. Add device
+3. Select Sinric Pro
+4. Login to Sinric account
+5. Devices appear automatically
+
+## Voice Commands
+
+* Hey Google, turn ON bulb
+* Hey Google, turn OFF fan
+
+---
+
+# 17. Features List
+
+* Real-time energy monitoring
+* OLED display visualization
+* Wireless appliance control
+* Blynk cloud monitoring
+* Google Assistant control
+* Relay automation
+* WiFi connectivity
+* SuperChart analytics
+* Smart home integration
+* Embedded IoT system
+
+---
+
+# 18. Applications
+
+* Smart homes
+* Industrial monitoring
+* Smart classrooms
+* Hostel energy monitoring
+* Smart laboratories
+* Energy-saving systems
+* Home automation
+
+---
+
+# 19. Advantages
+
+* Wireless operation
+* Remote monitoring
+* Energy-saving capability
+* Easy automation
+* Cloud integration
+* Voice assistant support
+* Low-cost implementation
+* Real-time analytics
+
+---
+
+# 20. Limitations
+
+* Requires internet connection
+* Depends on WiFi stability
+* Limited relay load capacity
+* Sensor calibration required
+
+---
+
+# 21. Future Improvements
+
+* AI-based energy prediction
+* Mobile notifications
+* Smart scheduling
+* Solar integration
+* Automatic overload protection
+* Face recognition control
+* MQTT integration
+* Machine learning analytics
+
+---
+
+# 22. Result
+
+The developed system successfully monitored voltage, current, and power consumption while enabling wireless appliance control through Blynk and Google Assistant.
+
+The system achieved stable IoT communication, real-time data visualization, and smart relay-based automation.
+
+---
+
+# 23. Conclusion
+
+The project successfully demonstrates the implementation of an IoT-based Smart Energy Monitoring and Home Automation System using ESP32.
+
+The integration of embedded systems, cloud IoT, relay automation, and voice assistant control provides an efficient, scalable, and intelligent smart home solution.
+
+---
