@@ -196,20 +196,6 @@ Embedded Systems + IoT + Smart Monitoring
 
 ---
 
-# 👨‍💻 Author
-
-Ramji
-
----
-
-# 📌 GitHub Repository
-
-```bash
-IOT-BASED-ENERGY-MONITORING-SYSTEM
-```
-
----
-
 # ⭐ Project Status
 
 ✅ Completed  
