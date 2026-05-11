@@ -39,9 +39,9 @@ SPDT CENTER -> A0
 
 // ================= BLYNK =================
 
-#define BLYNK_TEMPLATE_ID "TMPL3dtdxhM1I"
-#define BLYNK_TEMPLATE_NAME "IOT EMS SYSTEM"
-#define BLYNK_AUTH_TOKEN "X4b1BKE2L6tNcIj_ZHIF35XbFlvCvs42"
+#define BLYNK_TEMPLATE_ID "................"
+#define BLYNK_TEMPLATE_NAME "...................."
+#define BLYNK_AUTH_TOKEN "......................."
 
 #define BLYNK_PRINT Serial
 
@@ -56,7 +56,7 @@ SPDT CENTER -> A0
 
 // ================= WIFI =================
 
-char ssid[] = "minato";
+char ssid[] = "...........";
 char pass[] = "";
 
 // ================= OLED =================
